@@ -16,6 +16,7 @@ const state = {
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+let motionObserver;
 
 document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
@@ -24,12 +25,22 @@ document.addEventListener("DOMContentLoaded", () => {
   initForms();
   initGallery();
   setDefaultDates();
+  initMotion();
   document.body.classList.add("page-ready");
 });
 
 function initNavigation() {
   const toggle = $("[data-nav-toggle]");
   const nav = $("[data-nav]");
+  const header = $(".site-header");
+  if (header && "IntersectionObserver" in window) {
+    const sentinel = document.createElement("span");
+    sentinel.className = "scroll-sentinel";
+    document.body.prepend(sentinel);
+    new IntersectionObserver(([entry]) => {
+      header.classList.toggle("is-scrolled", !entry.isIntersecting);
+    }, { rootMargin: "-12px 0px 0px 0px" }).observe(sentinel);
+  }
   toggle?.addEventListener("click", () => {
     const open = !nav.classList.contains("open");
     nav.classList.toggle("open", open);
@@ -85,6 +96,7 @@ function renderDinnerMenu() {
   });
   grid.innerHTML = items.length ? items.map((item) => menuCard(item)).join("") : emptyMenu("Keine Gerichte für diese Auswahl gefunden.");
   bindAddButtons(grid);
+  observeMotionElements(grid);
 }
 
 function updateLunchMenu() {
@@ -113,6 +125,7 @@ function updateLunchMenu() {
   message.textContent = "Das Mittagsmenü ist aktuell verfügbar.";
   grid.innerHTML = lunchMenu.map((item) => menuCard(item)).join("");
   bindAddButtons(grid);
+  observeMotionElements(grid);
 }
 
 function menuCard(item, options = {}) {
@@ -146,7 +159,7 @@ function tagLabel(tag) {
 
 function bindAddButtons(scope = document) {
   $$("[data-add]", scope).forEach((button) => {
-    if (!button.disabled) button.onclick = () => addToCart(button.dataset.add);
+    if (!button.disabled) button.onclick = () => addToCart(button.dataset.add, button);
   });
 }
 
@@ -154,7 +167,7 @@ function findItem(id) {
   return [...lunchMenu, ...dinnerMenu].find((item) => item.id === id);
 }
 
-function addToCart(id) {
+function addToCart(id, trigger) {
   const item = findItem(id);
   if (!item) return;
   if (lunchMenu.some((lunchItem) => lunchItem.id === id) && !isLunchOpenNow()) {
@@ -166,6 +179,8 @@ function addToCart(id) {
   else state.cart.push({ id, qty: 1, note: "" });
   persistCart();
   renderCart();
+  animateAddButton(trigger);
+  bumpCartCount();
 }
 
 function initCart() {
@@ -348,6 +363,68 @@ function initGallery() {
     });
   });
   $("[data-lightbox-close]")?.addEventListener("click", () => lightbox.classList.remove("open"));
+  observeMotionElements(gallery);
+}
+
+function initMotion() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  motionObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        motionObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.16, rootMargin: "0px 0px -8% 0px" })
+    : null;
+  document.body.classList.add("motion-ready");
+  observeMotionElements(document);
+}
+
+function observeMotionElements(scope = document) {
+  if (!motionObserver) return;
+  const selectors = [
+    ".section-head",
+    ".feature-grid article",
+    ".menu-card",
+    ".gallery-item",
+    ".form-card",
+    ".order-intro",
+    ".order-steps span",
+    ".pickup-note",
+    ".map-wrap",
+    ".contact-layout > div:first-child"
+  ].join(",");
+  $$(selectors, scope).forEach((element, index) => {
+    if (element.dataset.revealReady) return;
+    element.dataset.revealReady = "true";
+    element.style.setProperty("--reveal-delay", `${Math.min(index, 8) * 45}ms`);
+    motionObserver.observe(element);
+  });
+}
+
+function animateAddButton(button) {
+  if (!button) return;
+  const originalText = button.textContent;
+  button.classList.remove("added");
+  void button.offsetWidth;
+  button.classList.add("added");
+  button.textContent = "HinzugefÃ¼gt";
+  window.setTimeout(() => {
+    button.classList.remove("added");
+    button.textContent = originalText;
+  }, 900);
+}
+
+function bumpCartCount() {
+  $$("[data-cart-count]").forEach((node) => {
+    node.classList.remove("bump");
+    void node.offsetWidth;
+    node.classList.add("bump");
+  });
+  const cart = $(".floating-cart");
+  cart?.classList.add("attention");
+  window.setTimeout(() => cart?.classList.remove("attention"), 520);
 }
 
 function getBerlinParts() {

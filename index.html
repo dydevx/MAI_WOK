@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -48,9 +48,13 @@
             <span>Abholung im Restaurant</span>
             <span>WhatsApp Anfrage</span>
           </div>
+          <div class="hero-service-row" aria-label="Bestellhinweise">
+            <span>Mittagsmenü nach deutscher Uhrzeit</span>
+            <span>Speisekarte jederzeit verfügbar</span>
+          </div>
         </div>
         <figure class="hero-visual">
-          <img src="assets/images/hero.webp" alt="Mai Wok Spezialität" fetchpriority="high">
+          <img src="assets/images/dish-08.webp" alt="Mai Wok Spezialität" fetchpriority="high">
         </figure>
       </div>
     </section>
@@ -115,11 +119,20 @@
 
     <section class="order-section section-pad" id="bestellen">
       <div class="container order-layout">
-        <div>
+        <div class="order-intro">
           <p class="eyebrow">Abholung</p>
           <h2>Zur Abholung bestellen</h2>
           <p>Wählen Sie Ihre Gerichte, senden Sie die Anfrage per E-Mail und WhatsApp und holen Sie die Bestellung im Restaurant ab.</p>
           <button class="btn btn-reserve" type="button" data-open-cart>Warenkorb ansehen</button>
+          <div class="order-steps" aria-label="Bestellablauf">
+            <span><strong>01</strong> Gerichte auswählen</span>
+            <span><strong>02</strong> Anfrage senden</span>
+            <span><strong>03</strong> Frisch abholen</span>
+          </div>
+          <div class="pickup-note">
+            <strong>WhatsApp & Abholung</strong>
+            <span>Die Bestellung wird als Anfrage vorbereitet. Bitte senden Sie die WhatsApp-Nachricht ab und holen Sie die Speisen in der Schwarzwaldstraße 78b ab.</span>
+          </div>
         </div>
         <form class="form-card" id="orderForm" novalidate>
           <h3>Ihre Abholdaten</h3>
@@ -198,7 +211,7 @@
           </div>
         </div>
         <div class="map-wrap">
-          <iframe title="Google Maps: Mai Wok Freiburg" loading="lazy" src="https://www.google.com/maps?q=Schwarzwaldstra%C3%9Fe%2078b%2C%2079117%20Freiburg&output=embed"></iframe>
+          <iframe title="Google Maps: Mai Wok Freiburg" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1335.165462917584!2d7.868386071254449!3d47.9879914648692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47911cc1bad0fb27%3A0x714e3eeb95d2cbb2!2sMai-Wok!5e0!3m2!1sen!2s!4v1783268485317!5m2!1sen!2s" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
       </div>
     </section>
