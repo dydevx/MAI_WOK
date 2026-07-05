@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mai Wok Freiburg - Asiatische Küche, Sushi & Abholung</title>
+  <meta name="description" content="Mai Wok in Freiburg: asiatische Küche, Mittagsmenü, Sushi, Abholung, WhatsApp-Bestellung und Tischreservierung.">
+  <link rel="icon" href="assets/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#start" aria-label="Mai Wok Startseite">
+      <img src="assets/images/logo.png" alt="Mai Wok Logo" width="58" height="45">
+      <span>Mai Wok</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Navigation öffnen" aria-expanded="false" data-nav-toggle>
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main-nav" data-nav>
+      <a href="#start">Startseite</a>
+      <a href="#ueber-uns">Über uns</a>
+      <a href="#mittagsmenu" data-lunch-nav>Mittagsmenü</a>
+      <a href="#abendmenu">Speisekarte</a>
+      <a href="#galerie">Galerie</a>
+      <a href="#reservieren">Reservieren</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn-primary" href="#bestellen">Jetzt bestellen</a>
+  </header>
+
+  <main>
+    <section class="hero" id="start">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <p class="eyebrow">Mai Wok Freiburg</p>
+          <h1>Authentische asiatische Küche in Freiburg</h1>
+          <p>Frisch zubereitet, voller Geschmack und bequem zur Abholung.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#bestellen">Jetzt bestellen</a>
+            <a class="btn btn-light" href="#abendmenu">Speisekarte ansehen</a>
+          </div>
+          <div class="quick-facts">
+            <span>Mo-Sa<br>09:00-21:00 Uhr</span>
+            <span>Abholung im Restaurant</span>
+            <span>WhatsApp Anfrage</span>
+          </div>
+        </div>
+        <figure class="hero-visual">
+          <img src="assets/images/hero.webp" alt="Mai Wok Spezialität" fetchpriority="high">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section-pad" id="ueber-uns">
+      <div class="container split">
+        <div>
+          <p class="eyebrow">Willkommen</p>
+          <h2>Willkommen bei Mai Wok</h2>
+          <p>Bei Mai Wok erwartet Sie eine vielfältige Auswahl frisch zubereiteter asiatischer Spezialitäten. Ob für eine entspannte Mahlzeit vor Ort oder zur schnellen Abholung, wir bereiten jedes Gericht mit frischen Zutaten und viel Leidenschaft zu.</p>
+          <p>Unsere Küche verbindet aromatische Saucen, knackiges Gemüse, hochwertige Zutaten und schnelle Zubereitung.</p>
+        </div>
+        <div class="feature-grid">
+          <article><span>01</span><h3>Frische Zutaten</h3><p>Gemüse, Kräuter und Saucen werden sorgfältig vorbereitet.</p></article>
+          <article><span>02</span><h3>Schnelle Zubereitung</h3><p>Ideal für Mittagspause, Feierabend oder Abholung.</p></article>
+          <article><span>03</span><h3>WhatsApp Bestellung</h3><p>Gerichte auswählen und Anfrage direkt senden.</p></article>
+          <article><span>04</span><h3>Abholung vor Ort</h3><p>Direkt in der Schwarzwaldstraße abholen.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu-section section-pad lunch-band" id="mittagsmenu" data-lunch-section>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Montag bis Samstag: 09:00-15:00 Uhr</p>
+          <h2>Mittagsmenü</h2>
+          <div class="status-row">
+            <span class="availability" data-lunch-badge>Wird geprüft</span>
+            <span data-berlin-time>Europe/Berlin</span>
+          </div>
+          <p class="section-copy" data-lunch-message>Das Mittagsmenü wird anhand der aktuellen Uhrzeit in Deutschland geprüft.</p>
+          <a class="text-link" href="assets/menu/mittagsmenu.pdf" target="_blank" rel="noopener noreferrer">Mittagsmenü als PDF öffnen</a>
+        </div>
+        <div class="pdf-preview" data-lunch-pdf>
+          <object data="assets/menu/mittagsmenu.pdf" type="application/pdf" aria-label="Mittagsmenü PDF">
+            <p>Das PDF kann hier nicht angezeigt werden. <a href="assets/menu/mittagsmenu.pdf" target="_blank" rel="noopener noreferrer">Mittagsmenü als PDF öffnen</a></p>
+          </object>
+        </div>
+        <div class="menu-grid" id="lunchGrid"></div>
+      </div>
+    </section>
+
+    <section class="menu-section section-pad" id="abendmenu">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Immer verfügbar</p>
+          <h2>Unsere Speisekarte</h2>
+          <p class="section-copy">Wählen Sie aus Vorspeisen, Suppen, Bowls, Hauptgerichten, Sushi, Desserts und Getränken.</p>
+          <a class="text-link" href="assets/menu/speisekarte.pdf" target="_blank" rel="noopener noreferrer">Vollständige Speisekarte als PDF öffnen</a>
+        </div>
+        <div class="filters" aria-label="Menüfilter">
+          <button class="chip active" type="button" data-filter="alle">Alle</button>
+          <button class="chip" type="button" data-filter="vegetarisch">Vegetarisch</button>
+          <button class="chip" type="button" data-filter="vegan">Vegan</button>
+          <button class="chip" type="button" data-filter="scharf">Scharf</button>
+          <button class="chip" type="button" data-filter="beliebt">Beliebt</button>
+        </div>
+        <div class="category-tabs" id="categoryTabs" aria-label="Kategorien"></div>
+        <div class="menu-grid" id="dinnerGrid"></div>
+      </div>
+    </section>
+
+    <section class="order-section section-pad" id="bestellen">
+      <div class="container order-layout">
+        <div>
+          <p class="eyebrow">Abholung</p>
+          <h2>Zur Abholung bestellen</h2>
+          <p>Wählen Sie Ihre Gerichte, senden Sie die Anfrage per E-Mail und WhatsApp und holen Sie die Bestellung im Restaurant ab.</p>
+          <button class="btn btn-reserve" type="button" data-open-cart>Warenkorb ansehen</button>
+        </div>
+        <form class="form-card" id="orderForm" novalidate>
+          <h3>Ihre Abholdaten</h3>
+          <label>Vor- und Nachname<input name="name" autocomplete="name" required></label>
+          <label>Telefonnummer<input name="phone" type="tel" autocomplete="tel" required></label>
+          <label>E-Mail-Adresse<input name="email" type="email" autocomplete="email" required></label>
+          <div class="form-row">
+            <label>Abholdatum<input name="pickupDate" type="date" required></label>
+            <label>Gewünschte Abholzeit<input name="pickupTime" type="time" min="09:00" max="21:00" required></label>
+          </div>
+          <label>Zahlungsmethode
+            <select name="payment">
+              <option value="">Bitte wählen</option>
+              <option>Bar bei Abholung</option>
+              <option>Kartenzahlung bei Abholung</option>
+            </select>
+          </label>
+          <label>Bestellhinweise<textarea name="notes" rows="4" placeholder="z. B. ohne Koriander"></textarea></label>
+          <button class="btn btn-primary btn-full" type="submit">Bestellung abschicken</button>
+          <div class="notice" id="orderNotice" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="gallery section-pad" id="galerie">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Galerie</p>
+          <h2>Unsere Gerichte</h2>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <section class="reservation section-pad" id="reservieren">
+      <div class="container order-layout">
+        <div>
+          <p class="eyebrow">Reservierung</p>
+          <h2>Tisch reservieren</h2>
+          <p>Senden Sie Ihre Reservierungsanfrage per WhatsApp und E-Mail. Die Reservierung ist erst nach unserer Bestätigung verbindlich.</p>
+          <ul class="check-list">
+            <li>Montag - Samstag: 09:00 - 21:00 Uhr</li>
+            <li>Sonntag geschlossen</li>
+            <li>Telefon und WhatsApp: +49 177 3943060</li>
+          </ul>
+        </div>
+        <form class="form-card" id="reservationForm" novalidate>
+          <h3>Reservierungsanfrage</h3>
+          <label>Vor- und Nachname<input name="name" autocomplete="name" required></label>
+          <label>Telefonnummer<input name="phone" type="tel" autocomplete="tel" required></label>
+          <label>E-Mail-Adresse<input name="email" type="email" autocomplete="email" required></label>
+          <div class="form-row">
+            <label>Datum<input name="date" type="date" required></label>
+            <label>Uhrzeit<input name="time" type="time" min="09:00" max="21:00" required></label>
+          </div>
+          <label>Anzahl der Personen<input name="people" type="number" min="1" max="20" required></label>
+          <label>Besondere Wünsche<textarea name="requests" rows="4"></textarea></label>
+          <button class="btn btn-gold btn-full" type="submit">Reservierungsanfrage senden</button>
+          <div class="notice" id="reservationNotice" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="contact section-pad" id="kontakt">
+      <div class="container contact-layout">
+        <div>
+          <p class="eyebrow">Kontakt</p>
+          <h2>Mai Wok</h2>
+          <address>Schwarzwaldstraße 78b<br>79117 Freiburg im Breisgau-Süd</address>
+          <p>Telefon: <a href="tel:+491773943060">+49 177 3943060</a><br>E-Mail: <a href="mailto:maiwokzo@gmail.com">maiwokzo@gmail.com</a></p>
+          <p><strong>Öffnungszeiten</strong><br>Montag - Samstag: 09:00 - 21:00 Uhr<br>Sonntag: Geschlossen</p>
+          <div class="contact-actions">
+            <a class="btn btn-light" href="tel:+491773943060">Anrufen</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/491773943060" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination=Schwarzwaldstra%C3%9Fe%2078b%2C%2079117%20Freiburg" target="_blank" rel="noopener noreferrer">Route planen</a>
+          </div>
+        </div>
+        <div class="map-wrap">
+          <iframe title="Google Maps: Mai Wok Freiburg" loading="lazy" src="https://www.google.com/maps?q=Schwarzwaldstra%C3%9Fe%2078b%2C%2079117%20Freiburg&output=embed"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Alle Rechte vorbehalten</p>
+      <p>Design: Hoangcaster</p>
+    </div>
+  </footer>
+
+  <button class="floating-cart" type="button" data-open-cart aria-label="Warenkorb öffnen">Warenkorb <span data-cart-count>0</span></button>
+  <div class="cart-backdrop" data-cart-backdrop></div>
+  <aside class="cart-panel" data-cart-panel aria-label="Warenkorb">
+    <div class="cart-head">
+      <div><span>Abholung im Restaurant</span><h3>Warenkorb</h3></div>
+      <button class="icon-btn" type="button" data-close-cart aria-label="Warenkorb schließen">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <button class="text-button" type="button" data-clear-cart>Warenkorb leeren</button>
+      <div class="cart-total"><span>Gesamt</span><strong id="cartTotal">0,00 €</strong></div>
+      <a class="btn btn-primary btn-full" href="#orderForm" data-close-cart-link>Anfrage abschließen</a>
+    </div>
+  </aside>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button type="button" aria-label="Galerie schließen" data-lightbox-close>×</button>
+    <img alt="">
+  </div>
+
+  <script src="menu-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
