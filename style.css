@@ -500,34 +500,6 @@ h2 {
   border-bottom: 2px solid currentColor;
 }
 
-.pdf-preview {
-  overflow: hidden;
-  margin-bottom: 24px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: none;
-}
-
-.pdf-preview object {
-  display: block;
-  width: 100%;
-  height: min(720px, 78vh);
-}
-
-.pdf-preview p {
-  margin: 0;
-  padding: 18px;
-  color: var(--muted);
-  font-weight: 700;
-}
-
-.pdf-preview a {
-  color: var(--red);
-  font-weight: 800;
-  border-bottom: 2px solid currentColor;
-}
-
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
