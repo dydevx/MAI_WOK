@@ -2,16 +2,24 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Mai Wok Freiburg - Asiatische Küche, Sushi & Abholung</title>
   <meta name="description" content="Mai Wok in Freiburg: asiatische Küche, Mittagsmenü, Sushi, Abholung, WhatsApp-Bestellung und Tischreservierung.">
   <link rel="icon" href="assets/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="intro-curtain" aria-hidden="true">
+    <div class="intro-mark">
+      <img src="assets/images/logo.png" alt="">
+      <span>Mai Wok</span>
+    </div>
+  </div>
+
   <header class="site-header">
     <a class="brand" href="#start" aria-label="Mai Wok Startseite">
       <img src="assets/images/logo.png" alt="Mai Wok Logo" width="58" height="45">
@@ -23,8 +31,8 @@
     <nav class="main-nav" data-nav>
       <a href="#start">Startseite</a>
       <a href="#ueber-uns">Über uns</a>
-      <a href="#mittagsmenu" data-lunch-nav>Mittagsmenü</a>
-      <a href="#abendmenu">Speisekarte</a>
+      <a href="#mittagsmenu" data-lunch-nav hidden>Mittagsmenü</a>
+      <a href="#menu">Speisekarte</a>
       <a href="#galerie">Galerie</a>
       <a href="#reservieren">Reservieren</a>
       <a href="#kontakt">Kontakt</a>
@@ -41,7 +49,7 @@
           <p>Frisch zubereitet, voller Geschmack und bequem zur Abholung.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#bestellen">Jetzt bestellen</a>
-            <a class="btn btn-light" href="#abendmenu">Speisekarte ansehen</a>
+            <a class="btn btn-light" href="#menu">Speisekarte ansehen</a>
           </div>
           <div class="quick-facts">
             <span>Mo-Sa<br>09:00-21:00 Uhr</span>
@@ -68,46 +76,71 @@
           <p>Unsere Küche verbindet aromatische Saucen, knackiges Gemüse, hochwertige Zutaten und schnelle Zubereitung.</p>
         </div>
         <div class="feature-grid">
-          <article><span>01</span><h3>Frische Zutaten</h3><p>Gemüse, Kräuter und Saucen werden sorgfältig vorbereitet.</p></article>
-          <article><span>02</span><h3>Schnelle Zubereitung</h3><p>Ideal für Mittagspause, Feierabend oder Abholung.</p></article>
-          <article><span>03</span><h3>WhatsApp Bestellung</h3><p>Gerichte auswählen und Anfrage direkt senden.</p></article>
-          <article><span>04</span><h3>Abholung vor Ort</h3><p>Direkt in der Schwarzwaldstraße abholen.</p></article>
+          <article><span>Frisch</span><h3>Frische Zutaten</h3><p>Gemüse, Kräuter und Saucen werden sorgfältig vorbereitet.</p></article>
+          <article><span>Schnell</span><h3>Schnelle Zubereitung</h3><p>Ideal für Mittagspause, Feierabend oder Abholung.</p></article>
+          <article><span>Direkt</span><h3>WhatsApp Bestellung</h3><p>Gerichte auswählen und Anfrage direkt senden.</p></article>
+          <article><span>Vor Ort</span><h3>Abholung vor Ort</h3><p>Direkt in der Schwarzwaldstraße abholen.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="menu-section section-pad lunch-band" id="mittagsmenu" data-lunch-section>
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Montag bis Samstag: 09:00-15:00 Uhr</p>
+    <section class="menu-section section-pad lunch-band" id="mittagsmenu" data-lunch-section hidden>
+      <div class="container menu-shell">
+        <aside class="menu-aside">
+          <p class="eyebrow">Montag bis Samstag</p>
           <h2>Mittagsmenü</h2>
+          <p class="section-copy" data-lunch-message>Das Mittagsmenü ist nur nach aktueller Uhrzeit in Deutschland sichtbar.</p>
           <div class="status-row">
             <span class="availability" data-lunch-badge>Wird geprüft</span>
             <span data-berlin-time>Europe/Berlin</span>
           </div>
-          <p class="section-copy" data-lunch-message>Das Mittagsmenü wird anhand der aktuellen Uhrzeit in Deutschland geprüft. Wählen Sie verfügbare Gerichte direkt aus der Liste.</p>
+        </aside>
+        <div class="menu-content">
+          <div class="menu-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Mittagsmenü</p>
+                <h3>Kurze Auswahl nach Gruppen</h3>
+              </div>
+              <span>Berlin-Zeit</span>
+            </div>
+            <div class="category-tabs compact-tabs" id="lunchCategoryTabs" aria-label="Mittagskategorien"></div>
+            <div class="menu-grid" id="lunchGrid"></div>
+            <div class="menu-pager" id="lunchPager" aria-label="Mittagsmenü Seiten"></div>
+          </div>
         </div>
-        <div class="menu-grid" id="lunchGrid"></div>
       </div>
     </section>
 
-    <section class="menu-section section-pad" id="abendmenu">
-      <div class="container">
-        <div class="section-head">
+    <section class="menu-section section-pad" id="menu">
+      <div class="container menu-shell">
+        <aside class="menu-aside">
           <p class="eyebrow">Immer verfügbar</p>
-          <h2>Unsere Speisekarte</h2>
+          <h2>Speisekarte</h2>
           <p class="section-copy">Wählen Sie aus Vorspeisen, Suppen, Bowls, Hauptgerichten, Sushi, Desserts und Getränken.</p>
           <a class="text-link" href="assets/menu/speisekarte.pdf" target="_blank" rel="noopener noreferrer">Vollständige Speisekarte als PDF öffnen</a>
+        </aside>
+        <div class="menu-content">
+          <div class="menu-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Speisekarte</p>
+              <h3>Abendkarte nach Kategorien</h3>
+            </div>
+            <span>Empfohlen zuerst</span>
+          </div>
+          <div class="filters" aria-label="Menüfilter">
+            <button class="chip active" type="button" data-filter="alle">Alle</button>
+            <button class="chip" type="button" data-filter="vegetarisch">Vegetarisch</button>
+            <button class="chip" type="button" data-filter="vegan">Vegan</button>
+            <button class="chip" type="button" data-filter="scharf">Scharf</button>
+            <button class="chip" type="button" data-filter="beliebt">Beliebt</button>
+          </div>
+          <div class="category-tabs" id="categoryTabs" aria-label="Kategorien"></div>
+          <div class="menu-grid" id="dinnerGrid"></div>
+          <div class="menu-pager" id="dinnerPager" aria-label="Speisekarte Seiten"></div>
+          </div>
         </div>
-        <div class="filters" aria-label="Menüfilter">
-          <button class="chip active" type="button" data-filter="alle">Alle</button>
-          <button class="chip" type="button" data-filter="vegetarisch">Vegetarisch</button>
-          <button class="chip" type="button" data-filter="vegan">Vegan</button>
-          <button class="chip" type="button" data-filter="scharf">Scharf</button>
-          <button class="chip" type="button" data-filter="beliebt">Beliebt</button>
-        </div>
-        <div class="category-tabs" id="categoryTabs" aria-label="Kategorien"></div>
-        <div class="menu-grid" id="dinnerGrid"></div>
       </div>
     </section>
 
@@ -119,9 +152,9 @@
           <p>Wählen Sie Ihre Gerichte, senden Sie die Anfrage per E-Mail und WhatsApp und holen Sie die Bestellung im Restaurant ab.</p>
           <button class="btn btn-reserve" type="button" data-open-cart>Warenkorb ansehen</button>
           <div class="order-steps" aria-label="Bestellablauf">
-            <span><strong>01</strong> Gerichte auswählen</span>
-            <span><strong>02</strong> Anfrage senden</span>
-            <span><strong>03</strong> Frisch abholen</span>
+            <span><strong>Wählen</strong> Gerichte auswählen</span>
+            <span><strong>Senden</strong> Anfrage senden</span>
+            <span><strong>Abholen</strong> Frisch abholen</span>
           </div>
           <div class="pickup-note">
             <strong>WhatsApp & Abholung</strong>
@@ -219,6 +252,11 @@
   </footer>
 
   <button class="floating-cart" type="button" data-open-cart aria-label="Warenkorb öffnen">Warenkorb <span data-cart-count>0</span></button>
+  <nav class="mobile-dock" aria-label="Schnellaktionen">
+    <a href="#menu">Speisekarte</a>
+    <button type="button" data-open-cart>Warenkorb <span data-cart-count>0</span></button>
+    <a href="tel:+491773943060">Anrufen</a>
+  </nav>
   <div class="cart-backdrop" data-cart-backdrop></div>
   <aside class="cart-panel" data-cart-panel aria-label="Warenkorb">
     <div class="cart-head">

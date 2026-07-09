@@ -8,10 +8,14 @@ const RESTAURANT = {
 
 const EMAIL_ENDPOINT = "";
 const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
+const MENU_PAGE_SIZE = 4;
 const state = {
   cart: JSON.parse(sessionStorage.getItem("maiWokCart") || "[]"),
   filter: "alle",
-  category: "Alle"
+  category: "Empfohlen",
+  lunchCategory: "Beliebt",
+  dinnerPage: 1,
+  lunchPage: 1
 };
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -19,15 +23,33 @@ const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(sel
 let motionObserver;
 
 document.addEventListener("DOMContentLoaded", () => {
+  initPageIntro();
   initNavigation();
   initMenus();
   initCart();
   initForms();
   initGallery();
+  initHeroTilt();
   setDefaultDates();
   initMotion();
   document.body.classList.add("page-ready");
 });
+
+function initPageIntro() {
+  const curtain = $(".intro-curtain");
+  const finish = () => document.body.classList.add("intro-complete");
+  if (!curtain || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    finish();
+    return;
+  }
+  const onIntroEnd = (event) => {
+    if (event.animationName !== "intro-exit") return;
+    curtain.removeEventListener("animationend", onIntroEnd);
+    finish();
+  };
+  curtain.addEventListener("animationend", onIntroEnd);
+  window.setTimeout(finish, 3200);
+}
 
 function initNavigation() {
   const toggle = $("[data-nav-toggle]");
@@ -55,6 +77,7 @@ function initNavigation() {
 }
 
 function initMenus() {
+  buildLunchTabs();
   buildCategoryTabs();
   renderDinnerMenu();
   updateLunchMenu();
@@ -64,7 +87,26 @@ function initMenus() {
       $$(".chip").forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
       state.filter = button.dataset.filter;
+      state.dinnerPage = 1;
       renderDinnerMenu();
+    });
+  });
+}
+
+function buildLunchTabs() {
+  const tabs = $("#lunchCategoryTabs");
+  if (!tabs) return;
+  const categories = ["Beliebt", ...new Set(lunchMenu.map((item) => lunchCategoryFor(item)))];
+  tabs.innerHTML = categories.map((category) => (
+    `<button class="${category === state.lunchCategory ? "active" : ""}" type="button" data-lunch-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`
+  )).join("");
+  $$("button", tabs).forEach((button) => {
+    button.addEventListener("click", () => {
+      $$("button", tabs).forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      state.lunchCategory = button.dataset.lunchCategory;
+      state.lunchPage = 1;
+      updateLunchMenu();
     });
   });
 }
@@ -72,15 +114,16 @@ function initMenus() {
 function buildCategoryTabs() {
   const tabs = $("#categoryTabs");
   if (!tabs) return;
-  const categories = ["Alle", ...new Set(dinnerMenu.map((item) => item.category))];
+  const categories = ["Empfohlen", "Alle Kategorien", ...new Set(dinnerMenu.map((item) => item.category))];
   tabs.innerHTML = categories.map((category) => (
-    `<button class="${category === "Alle" ? "active" : ""}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`
+    `<button class="${category === state.category ? "active" : ""}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`
   )).join("");
   $$("button", tabs).forEach((button) => {
     button.addEventListener("click", () => {
       $$("button", tabs).forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
       state.category = button.dataset.category;
+      state.dinnerPage = 1;
       renderDinnerMenu();
     });
   });
@@ -91,41 +134,126 @@ function renderDinnerMenu() {
   if (!grid) return;
   const items = dinnerMenu.filter((item) => {
     const filterMatch = state.filter === "alle" || item.tags.includes(state.filter);
-    const categoryMatch = state.category === "Alle" || item.category === state.category;
+    const categoryMatch = state.category === "Empfohlen"
+      ? item.tags.includes("beliebt")
+      : state.category === "Alle Kategorien" || item.category === state.category;
     return filterMatch && categoryMatch;
   });
-  grid.innerHTML = items.length ? items.map((item) => menuCard(item)).join("") : emptyMenu("Keine Gerichte für diese Auswahl gefunden.");
+  const pageData = paginateItems(items, state.dinnerPage);
+  state.dinnerPage = pageData.page;
+  grid.innerHTML = pageData.items.length ? pageData.items.map((item) => menuCard(item)).join("") : emptyMenu("Keine Gerichte für diese Auswahl gefunden.");
+  renderMenuPager("#dinnerPager", pageData, "dinner");
   bindAddButtons(grid);
   observeMotionElements(grid);
 }
 
 function updateLunchMenu() {
   const grid = $("#lunchGrid");
+  if (!grid) return;
   const section = $("[data-lunch-section]");
-  if (!grid || !section) return;
   const now = getBerlinParts();
   const clock = $("[data-berlin-time]");
   const badge = $("[data-lunch-badge]");
   const message = $("[data-lunch-message]");
-  const minutes = now.hour * 60 + now.minute;
-  const isSunday = now.weekday === 7;
-  const open = !isSunday && minutes >= 9 * 60 && minutes < 15 * 60;
-  const visible = open;
+  const open = isLunchOpenParts(now);
 
-  section.hidden = !visible;
-  $$("[data-lunch-nav]").forEach((link) => { link.hidden = !visible; });
+  if (section) section.hidden = !open;
+  $$("[data-lunch-nav]").forEach((link) => { link.hidden = !open; });
   if (clock) clock.textContent = `Berlin: ${String(now.hour).padStart(2, "0")}:${String(now.minute).padStart(2, "0")} Uhr`;
-  if (!visible) {
+  if (!open) {
     grid.innerHTML = "";
+    $("#lunchPager") && ($("#lunchPager").innerHTML = "");
     renderCart();
     return;
   }
-  badge.textContent = "Jetzt verfügbar";
-  badge.classList.remove("closed");
-  message.textContent = "Das Mittagsmenü ist aktuell verfügbar.";
-  grid.innerHTML = lunchMenu.map((item) => menuCard(item)).join("");
+  if (badge) {
+    badge.textContent = "Mittag jetzt verfügbar";
+    badge.classList.remove("closed");
+  }
+  if (message) {
+    message.textContent = "Es ist gerade Mittagszeit in Deutschland. Das Mittagsmenü ist jetzt sichtbar und bestellbar.";
+  }
+  renderLunchMenu(open);
+  renderCart();
+}
+
+function renderLunchMenu(open = isLunchOpenNow()) {
+  const grid = $("#lunchGrid");
+  if (!grid) return;
+  const items = lunchMenu.filter((item) => {
+    const category = lunchCategoryFor(item);
+    return state.lunchCategory === "Beliebt" ? item.tags.includes("beliebt") : category === state.lunchCategory;
+  });
+  const cardOptions = open ? {} : { disabled: true, buttonText: "Nur 09:00-15:00" };
+  const pageData = paginateItems(items, state.lunchPage);
+  state.lunchPage = pageData.page;
+  grid.innerHTML = pageData.items.length ? pageData.items.map((item) => menuCard(item, cardOptions)).join("") : emptyMenu("Keine Mittagsgerichte für diese Auswahl gefunden.");
+  renderMenuPager("#lunchPager", pageData, "lunch");
   bindAddButtons(grid);
   observeMotionElements(grid);
+}
+
+function paginateItems(items, requestedPage) {
+  const totalPages = Math.max(1, Math.ceil(items.length / MENU_PAGE_SIZE));
+  const page = Math.min(Math.max(1, requestedPage), totalPages);
+  const start = (page - 1) * MENU_PAGE_SIZE;
+  return {
+    items: items.slice(start, start + MENU_PAGE_SIZE),
+    totalItems: items.length,
+    totalPages,
+    page,
+    start: items.length ? start + 1 : 0,
+    end: Math.min(start + MENU_PAGE_SIZE, items.length)
+  };
+}
+
+function renderMenuPager(selector, pageData, target) {
+  const pager = $(selector);
+  if (!pager) return;
+  if (pageData.totalItems <= MENU_PAGE_SIZE) {
+    pager.innerHTML = pageData.totalItems
+      ? `<span>${pageData.totalItems} Gerichte</span>`
+      : "";
+    return;
+  }
+  pager.innerHTML = `
+    <button type="button" data-page-target="${target}" data-page-action="prev" ${pageData.page === 1 ? "disabled" : ""}>Zurück</button>
+    <span>${pageData.start}-${pageData.end} von ${pageData.totalItems} Gerichten | Seite ${pageData.page}/${pageData.totalPages}</span>
+    <button type="button" data-page-target="${target}" data-page-action="next" ${pageData.page === pageData.totalPages ? "disabled" : ""}>Weiter</button>
+  `;
+  $$("button", pager).forEach((button) => {
+    button.addEventListener("click", () => {
+      changeMenuPage(button.dataset.pageTarget, button.dataset.pageAction);
+    });
+  });
+}
+
+function changeMenuPage(target, action) {
+  const delta = action === "next" ? 1 : -1;
+  if (target === "lunch") {
+    state.lunchPage += delta;
+    renderLunchMenu();
+  } else {
+    state.dinnerPage += delta;
+    renderDinnerMenu();
+  }
+  $(".menu-content")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function lunchCategoryFor(item) {
+  if (item.id.startsWith("LD")) return "Getränke";
+  if (item.id.startsWith("B")) return "Klassiker";
+  const code = Number.parseInt(item.code, 10);
+  if (Number.isNaN(code)) return "Weitere";
+  if (code <= 19) return "Suppen & Snacks";
+  if (code < 30) return "Chop Suey";
+  if (code < 40) return "Süß-Sauer";
+  if (code < 50) return "Erdnuss";
+  if (code < 60) return "Red Curry";
+  if (code < 70) return "Mango";
+  if (code < 80) return "Spezial";
+  if (code < 100) return "Vegetarisch";
+  return "Weitere";
 }
 
 function menuCard(item, options = {}) {
@@ -381,11 +509,36 @@ function initMotion() {
   observeMotionElements(document);
 }
 
+function initHeroTilt() {
+  const visual = $(".hero-visual");
+  if (!visual || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let frame = 0;
+  visual.addEventListener("pointermove", (event) => {
+    if (event.pointerType === "touch") return;
+    window.cancelAnimationFrame(frame);
+    frame = window.requestAnimationFrame(() => {
+      const rect = visual.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width - 0.5) * 7;
+      const y = ((event.clientY - rect.top) / rect.height - 0.5) * -7;
+      visual.style.setProperty("--tilt-x", `${x.toFixed(2)}deg`);
+      visual.style.setProperty("--tilt-y", `${y.toFixed(2)}deg`);
+    });
+  });
+  visual.addEventListener("pointerleave", () => {
+    visual.style.removeProperty("--tilt-x");
+    visual.style.removeProperty("--tilt-y");
+  });
+}
+
 function observeMotionElements(scope = document) {
   if (!motionObserver) return;
   const selectors = [
     ".section-head",
     ".feature-grid article",
+    ".menu-aside",
+    ".panel-head",
+    ".filters",
+    ".category-tabs",
     ".menu-card",
     ".gallery-item",
     ".form-card",
@@ -444,6 +597,10 @@ function getBerlinParts() {
 
 function isLunchOpenNow() {
   const now = getBerlinParts();
+  return isLunchOpenParts(now);
+}
+
+function isLunchOpenParts(now) {
   const minutes = now.hour * 60 + now.minute;
   return now.weekday !== 7 && minutes >= 9 * 60 && minutes < 15 * 60;
 }
@@ -457,11 +614,24 @@ function isLunchItem(id) {
 }
 
 function setDefaultDates() {
-  const iso = new Date().toISOString().slice(0, 10);
+  const iso = getBerlinDateISO();
   $$('input[type="date"]').forEach((input) => {
     input.min = iso;
     if (!input.value) input.value = iso;
   });
+}
+
+function getBerlinDateISO(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: RESTAURANT.timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date).reduce((acc, part) => {
+    acc[part.type] = part.value;
+    return acc;
+  }, {});
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
 function showNotice(node, text, isError = false) {
