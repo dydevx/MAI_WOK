@@ -157,21 +157,17 @@ function updateLunchMenu() {
   const message = $("[data-lunch-message]");
   const open = isLunchOpenParts(now);
 
-  if (section) section.hidden = !open;
-  $$("[data-lunch-nav]").forEach((link) => { link.hidden = !open; });
+  if (section) section.hidden = false;
+  $$("[data-lunch-nav]").forEach((link) => { link.hidden = false; });
   if (clock) clock.textContent = `Berlin: ${String(now.hour).padStart(2, "0")}:${String(now.minute).padStart(2, "0")} Uhr`;
-  if (!open) {
-    grid.innerHTML = "";
-    $("#lunchPager") && ($("#lunchPager").innerHTML = "");
-    renderCart();
-    return;
-  }
   if (badge) {
-    badge.textContent = "Mittag jetzt verfügbar";
-    badge.classList.remove("closed");
+    badge.textContent = open ? "Mittag jetzt bestellbar" : "Bestellung ab 09:00 Uhr";
+    badge.classList.toggle("closed", !open);
   }
   if (message) {
-    message.textContent = "Es ist gerade Mittagszeit in Deutschland. Das Mittagsmenü ist jetzt sichtbar und bestellbar.";
+    message.textContent = open
+      ? "Es ist gerade Mittagszeit in Deutschland. Das Mittagsmenü ist jetzt bestellbar."
+      : "Das Mittagsmenü bleibt sichtbar. Kaufen können Sie diese Gerichte Montag bis Samstag von 09:00 bis 15:00 Uhr nach deutscher Zeit.";
   }
   renderLunchMenu(open);
   renderCart();
