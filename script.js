@@ -558,7 +558,7 @@ function animateAddButton(button) {
   button.classList.remove("added");
   void button.offsetWidth;
   button.classList.add("added");
-  button.textContent = "HinzugefÃ¼gt";
+  button.textContent = "Hinzugef\u00fcgt";
   window.setTimeout(() => {
     button.classList.remove("added");
     button.textContent = originalText;
