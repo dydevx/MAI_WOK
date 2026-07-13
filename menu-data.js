@@ -1,3 +1,9 @@
+/*
+  MENÜ SCHNELL BEARBEITEN
+  name = Name des Gerichts, description = Beschreibung, price = Preis.
+  image = Bildpfad, zum Beispiel "assets/images/dish-01.webp".
+  Neue Gerichte einfach als weitere Zeile im passenden Menüblock einfügen.
+*/
 const imagePool = Array.from({ length: 24 }, (_, i) => `assets/images/dish-${String(i + 1).padStart(2, "0")}.webp`);
 const logoImage = "assets/images/logo.png";
 
@@ -125,8 +131,8 @@ const lunchClassicMenu = [
 const lunchMenu = [...lunchSupplementMenu, ...lunchClassicMenu];
 
 const dinnerMenu = [
-  { id: "1", code: "1", category: "Suppen", name: "Peking Suppe", description: "Entenfleisch, Gemüse und Ei.", price: 5.0, allergens: "5, 7, C", tags: ["beliebt"], image: logoImage },
-  { id: "2", code: "2", category: "Suppen", name: "Thai Suppe", description: "Garnelen, Hähnchen und Gemüse.", price: 5.9, allergens: "5, 7, B", tags: ["scharf"], image: logoImage },
+  { id: "1", code: "1", category: "Suppen", name: "Peking Suppe", description: "Entenfleisch, Gemüse und Ei.", price: 5.0, allergens: "5, 7, C", tags: ["beliebt"], image: "ảnh món ăn/Kopie von MRO04386.jpg" },
+  { id: "2", code: "2", category: "Suppen", name: "Thai Suppe", description: "Garnelen, Hähnchen und Gemüse.", price: 5.9, allergens: "5, 7, B", tags: ["scharf"], image: "ảnh món ăn/Kopie von MRO04386.jpg" },
   { id: "3", code: "3", category: "Suppen", name: "Sake Miso", description: "Misosuppe mit Lachs, Seetang und Pilzen.", price: 6.5, allergens: "5, 7, D", tags: [], image: logoImage },
   { id: "4", code: "4", category: "Vorspeisen", name: "Nem", description: "Vietnamesische Frühlingsrollen mit Hühnerfleisch, Glasnudeln und Gemüse.", price: 6.0, allergens: "A1, B, C, G", tags: ["beliebt"], image: logoImage },
   { id: "5", code: "5", category: "Vorspeisen", name: "Minifrühlingsrolle", description: "Mini-Frühlingsrollen mit Gemüsefüllung.", price: 5.0, allergens: "5, 7, C, D, F", tags: ["vegetarisch"], image: logoImage },

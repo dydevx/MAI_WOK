@@ -57,7 +57,7 @@
             <span>WhatsApp Anfrage</span>
           </div>
           <div class="hero-service-row" aria-label="Bestellhinweise">
-            <span>Mittagsmenü nach deutscher Uhrzeit</span>
+            <span>Mittagsmenü Montag bis Samstag</span>
             <span>Speisekarte jederzeit verfügbar</span>
           </div>
         </div>
@@ -89,10 +89,9 @@
         <aside class="menu-aside">
           <p class="eyebrow">Montag bis Samstag</p>
           <h2>Mittagsmenü</h2>
-          <p class="section-copy" data-lunch-message>Das Mittagsmenü ist sichtbar. Bestellen können Sie es Montag bis Samstag von 09:00 bis 15:00 Uhr nach deutscher Zeit.</p>
+          <p class="section-copy" data-lunch-message>Das Mittagsmenü ist sichtbar. Bestellen können Sie es Montag bis Samstag von 09:00 bis 15:00 Uhr.</p>
           <div class="status-row">
             <span class="availability" data-lunch-badge>Wird geprüft</span>
-            <span data-berlin-time>Europe/Berlin</span>
           </div>
         </aside>
         <div class="menu-content">
@@ -102,7 +101,6 @@
                 <p class="eyebrow">Mittagsmenü</p>
                 <h3>Kurze Auswahl nach Gruppen</h3>
               </div>
-              <span>Berlin-Zeit</span>
             </div>
             <div class="category-tabs compact-tabs" id="lunchCategoryTabs" aria-label="Mittagskategorien"></div>
             <div class="menu-grid" id="lunchGrid"></div>
@@ -199,27 +197,18 @@
         <div>
           <p class="eyebrow">Reservierung</p>
           <h2>Tisch reservieren</h2>
-          <p>Senden Sie Ihre Reservierungsanfrage per WhatsApp und E-Mail. Die Reservierung ist erst nach unserer Bestätigung verbindlich.</p>
+          <p>Reservieren Sie direkt hier auf der Website. Ihre Anfrage wird über Resmio gesendet, ohne dass Sie eine Mail-App öffnen müssen. Kontakt: <strong>maiwokzo@gmail.com</strong>.</p>
           <ul class="check-list">
             <li>Montag - Samstag: 09:00 - 21:00 Uhr</li>
             <li>Sonntag geschlossen</li>
             <li>Telefon und WhatsApp: +49 177 3943060</li>
           </ul>
         </div>
-        <form class="form-card" id="reservationForm" novalidate>
-          <h3>Reservierungsanfrage</h3>
-          <label>Vor- und Nachname<input name="name" autocomplete="name" required></label>
-          <label>Telefonnummer<input name="phone" type="tel" autocomplete="tel" required></label>
-          <label>E-Mail-Adresse<input name="email" type="email" autocomplete="email" required></label>
-          <div class="form-row">
-            <label>Datum<input name="date" type="date" required></label>
-            <label>Uhrzeit<input name="time" type="time" min="09:00" max="21:00" required></label>
-          </div>
-          <label>Anzahl der Personen<input name="people" type="number" min="1" max="20" required></label>
-          <label>Besondere Wünsche<textarea name="requests" rows="4"></textarea></label>
-          <button class="btn btn-gold btn-full" type="submit">Reservierungsanfrage senden</button>
-          <div class="notice" id="reservationNotice" role="status" aria-live="polite"></div>
-        </form>
+        <div class="form-card resmio-card">
+          <h3>Tisch online reservieren</h3>
+          <div id="resmio-maiwok-zo"></div>
+          <noscript><a class="btn btn-gold btn-full" href="https://app.resmio.com/maiwok-zo/widget" target="_blank" rel="noopener noreferrer">Reservierung öffnen</a></noscript>
+        </div>
       </div>
     </section>
 
@@ -278,5 +267,13 @@
 
   <script src="menu-data.js"></script>
   <script src="script.js"></script>
+  <script>
+    (function (d, s) {
+      var js, rjs = d.getElementsByTagName(s)[0];
+      js = d.createElement(s);
+      js.src = "https://static.resmio.com/static/de/widget.js#id=maiwok-zo&width=100%25&height=560px";
+      rjs.parentNode.insertBefore(js, rjs);
+    }(document, "script"));
+  </script>
 </body>
 </html>

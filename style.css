@@ -877,6 +877,8 @@ h2 {
 
 .menu-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid oklch(0.52 0.06 76 / 0.16);
   border-radius: var(--radius);
@@ -885,6 +887,31 @@ h2 {
     var(--surface);
   box-shadow: none;
   transition: transform 260ms var(--ease-out-quart), box-shadow 260ms var(--ease-out-quart), border-color 260ms var(--ease-out-quart), background 260ms var(--ease-out-quart);
+}
+
+.menu-card-image {
+  width: 100%;
+  height: 255px;
+  object-fit: cover;
+  object-position: center 72%;
+  flex: 0 0 auto;
+  display: block;
+}
+
+.resmio-card {
+  min-height: 620px;
+  overflow: hidden;
+}
+
+.resmio-card h3 {
+  margin-bottom: 18px;
+}
+
+#resmio-maiwok-zo,
+#resmio-maiwok-zo iframe {
+  width: 100% !important;
+  min-height: 560px;
+  border: 0;
 }
 
 .menu-card::before {
@@ -912,7 +939,8 @@ h2 {
   display: grid;
   grid-template-rows: auto auto auto auto;
   gap: 7px;
-  height: 100%;
+  flex: 1;
+  height: auto;
   padding: 14px;
 }
 

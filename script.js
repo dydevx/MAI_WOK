@@ -13,7 +13,7 @@ const state = {
   cart: JSON.parse(sessionStorage.getItem("maiWokCart") || "[]"),
   filter: "alle",
   category: "Empfohlen",
-  lunchCategory: "Beliebt",
+  lunchCategory: "Box to go",
   dinnerPage: 1,
   lunchPage: 1
 };
@@ -96,7 +96,8 @@ function initMenus() {
 function buildLunchTabs() {
   const tabs = $("#lunchCategoryTabs");
   if (!tabs) return;
-  const categories = ["Beliebt", ...new Set(lunchMenu.map((item) => lunchCategoryFor(item)))];
+  const allCategories = [...new Set(lunchMenu.map((item) => lunchCategoryFor(item)))];
+  const categories = ["Box to go", "Beliebt", ...allCategories.filter((category) => category !== "Box to go")];
   tabs.innerHTML = categories.map((category) => (
     `<button class="${category === state.lunchCategory ? "active" : ""}" type="button" data-lunch-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`
   )).join("");
@@ -152,22 +153,20 @@ function updateLunchMenu() {
   if (!grid) return;
   const section = $("[data-lunch-section]");
   const now = getBerlinParts();
-  const clock = $("[data-berlin-time]");
   const badge = $("[data-lunch-badge]");
   const message = $("[data-lunch-message]");
   const open = isLunchOpenParts(now);
 
   if (section) section.hidden = false;
   $$("[data-lunch-nav]").forEach((link) => { link.hidden = false; });
-  if (clock) clock.textContent = `Berlin: ${String(now.hour).padStart(2, "0")}:${String(now.minute).padStart(2, "0")} Uhr`;
   if (badge) {
     badge.textContent = open ? "Mittag jetzt bestellbar" : "Bestellung ab 09:00 Uhr";
     badge.classList.toggle("closed", !open);
   }
   if (message) {
     message.textContent = open
-      ? "Es ist gerade Mittagszeit in Deutschland. Das Mittagsmenü ist jetzt bestellbar."
-      : "Das Mittagsmenü bleibt sichtbar. Kaufen können Sie diese Gerichte Montag bis Samstag von 09:00 bis 15:00 Uhr nach deutscher Zeit.";
+      ? "Das Mittagsmenü ist jetzt bestellbar."
+      : "Das Mittagsmenü bleibt sichtbar. Kaufen können Sie diese Gerichte Montag bis Samstag von 09:00 bis 15:00 Uhr.";
   }
   renderLunchMenu(open);
   renderCart();
@@ -238,7 +237,7 @@ function changeMenuPage(target, action) {
 
 function lunchCategoryFor(item) {
   if (item.id.startsWith("LD")) return "Getränke";
-  if (item.id.startsWith("B")) return "Klassiker";
+  if (item.id.startsWith("B")) return "Box to go";
   const code = Number.parseInt(item.code, 10);
   if (Number.isNaN(code)) return "Weitere";
   if (code <= 19) return "Suppen & Snacks";
@@ -258,6 +257,7 @@ function menuCard(item, options = {}) {
   const buttonText = options.buttonText || "In den Warenkorb";
   return `
     <article class="menu-card">
+      ${item.image && item.image !== logoImage ? `<img class="menu-card-image" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">` : ""}
       <div class="menu-card-body">
         <div class="menu-card-top">
           <span class="code">${escapeHtml(item.code || item.id)}</span>
@@ -404,7 +404,6 @@ function persistCart() {
 
 function initForms() {
   $("#orderForm")?.addEventListener("submit", handleOrder);
-  $("#reservationForm")?.addEventListener("submit", handleReservation);
 }
 
 function handleOrder(event) {
@@ -433,25 +432,6 @@ function handleOrder(event) {
   ].join("\n");
   const links = sendMessage("Bestellung Mai Wok", message);
   showActionNotice($("#orderNotice"), "WhatsApp wurde geöffnet. Falls Sie auch per E-Mail senden möchten:", links);
-}
-
-function handleReservation(event) {
-  event.preventDefault();
-  const form = event.currentTarget;
-  const data = Object.fromEntries(new FormData(form));
-  if (!form.checkValidity()) return showNotice($("#reservationNotice"), "Bitte füllen Sie alle Pflichtfelder korrekt aus.", true);
-  const message = [
-    "Reservierungsanfrage Mai Wok", "",
-    `Name: ${data.name}`,
-    `Telefon: ${data.phone}`,
-    `E-Mail: ${data.email}`,
-    `Datum: ${data.date}`,
-    `Uhrzeit: ${data.time}`,
-    `Personen: ${data.people}`,
-    `Besondere Wünsche: ${data.requests || "-"}`
-  ].join("\n");
-  const links = sendMessage("Reservierung Mai Wok", message);
-  showActionNotice($("#reservationNotice"), "WhatsApp wurde geöffnet. Falls Sie auch per E-Mail senden möchten:", links);
 }
 
 function sendMessage(subject, message) {

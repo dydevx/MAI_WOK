@@ -1,0 +1,10 @@
+<div id="resmio-maiwok-zo"></div>
+<script>(function(d, s) {
+    var js, rjs = d.getElementsByTagName(s)[0];
+    js = d.createElement(s);
+    js.src = "//static.resmio.com/static/de/widget.js#id=maiwok-zo&width=275px&height=400px";
+    rjs.parentNode.insertBefore(js, rjs);
+}(document, "script"));
+</script>
+
+https://app.resmio.com/maiwok-zo/widget
