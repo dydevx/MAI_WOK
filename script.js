@@ -8,7 +8,7 @@ const RESTAURANT = {
 
 const EMAIL_ENDPOINT = "";
 const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
-const MENU_PAGE_SIZE = 4;
+const MENU_PAGE_SIZE = 8;
 const state = {
   cart: JSON.parse(sessionStorage.getItem("maiWokCart") || "[]"),
   filter: "alle",
@@ -225,6 +225,10 @@ function renderMenuPager(selector, pageData, target) {
 
 function changeMenuPage(target, action) {
   const delta = action === "next" ? 1 : -1;
+  const menuPanel = target === "lunch"
+    ? $("#mittagsmenu .menu-panel")
+    : $("#menu .menu-panel");
+
   if (target === "lunch") {
     state.lunchPage += delta;
     renderLunchMenu();
@@ -232,7 +236,13 @@ function changeMenuPage(target, action) {
     state.dinnerPage += delta;
     renderDinnerMenu();
   }
-  $(".menu-content")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  window.requestAnimationFrame(() => {
+    menuPanel?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start"
+    });
+  });
 }
 
 function lunchCategoryFor(item) {

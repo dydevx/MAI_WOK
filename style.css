@@ -822,9 +822,13 @@ h2 {
 }
 
 .menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 10px;
+  display: block;
+  column-count: 2;
+  column-gap: 10px;
+}
+
+.menu-panel {
+  scroll-margin-top: 112px;
 }
 
 .menu-pager {
@@ -879,6 +883,8 @@ h2 {
   position: relative;
   display: flex;
   flex-direction: column;
+  break-inside: avoid;
+  margin-bottom: 10px;
   overflow: hidden;
   border: 1px solid oklch(0.52 0.06 76 / 0.16);
   border-radius: var(--radius);
@@ -1814,9 +1820,11 @@ textarea { resize: vertical; }
   }
   .quick-facts,
   .feature-grid,
-  .menu-grid,
   .form-row {
     grid-template-columns: 1fr;
+  }
+  .menu-grid {
+    column-count: 1;
   }
   .gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
